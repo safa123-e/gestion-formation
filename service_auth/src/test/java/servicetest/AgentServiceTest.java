@@ -1,6 +1,10 @@
 package servicetest;
 
 
+import com.demo.model.AgentGa;
+import com.demo.model.EtatAgentGa;
+import com.demo.repository.AgentGaRepository;
+import com.demo.services.AgentGaService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -9,10 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Sort;
 
-import tn.isie.auth.model.AgentGa;
-import tn.isie.auth.model.EtatAgentGa;
-import tn.isie.auth.repository.AgentGaRepository;
-import tn.isie.auth.services.AgentGaService;
 
 import java.util.*;
 import static org.assertj.core.api.Assertions.*;
@@ -110,7 +110,7 @@ private AgentGaRepository agentGaRepository;
      assertThat(exception.getMessage()).contains("Agent introuvable");
  }
 
- 
+
  @Test
  @DisplayName("Doit mettre à jour un utilisateur existant")
  void updateUser_Success() {
@@ -145,6 +145,6 @@ private AgentGaRepository agentGaRepository;
 // // Assert
 // verify(agentGaRepository, times(1)).deleteById(1);
 // }
- 
+
 
 }

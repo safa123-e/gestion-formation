@@ -2,16 +2,22 @@ package repository;
 
 import com.demo.FormationServiceApplication;
 import com.demo.model.AgentGa;
+import com.demo.model.AgentProfilAppGa;
 import com.demo.model.EtatAgentGa;
 import com.demo.repository.AgentGaRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.demo.repository.AgentPrivGaRepository;
+import com.demo.repository.AgentProfilAppGaRepository;
+import com.demo.repository.EtatAgentGaRepo;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,18 +25,26 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@ContextConfiguration(classes = FormationServiceApplication.class)
+@EnableJpaRepositories(basePackages = "com.demo.repository")
+@EntityScan(basePackages = "com.demo.model")
 @ActiveProfiles("test")
-@SpringBootTest(classes = FormationServiceApplication.class)
-
-@DisplayName("Tests du repository User (AgentGaRepository)")
 class UserRepositoryTest {
 
     @Autowired
-    private AgentGaRepository userRepository;
+    private  AgentGaRepository userRepository ;
+    @Autowired
+    private AgentProfilAppGaRepository agentProfilAppGa ;
+    @Autowired
+    private AgentPrivGaRepository agentPrivGaRepository ;
+    @Autowired
+    private EtatAgentGaRepo etatAgentGaRepo ;
 
     @BeforeEach
     void setUp() {
         // ⚠️ si tu as des FK vers agent_ga, deleteAll peut échouer
+        agentProfilAppGa.deleteAll();
+        agentPrivGaRepository.deleteAll();
         // Dans ce cas, supprime d'abord les tables enfants via leurs repositories.
         userRepository.deleteAll();
     }
@@ -52,10 +66,10 @@ class UserRepositoryTest {
         user.setEtatAgentGa(etatActif());        // ⚠️ seulement si relation OK
         user.setPwdAgentGa("0000");
         user.setCinAgentGa("11111111");
-
+        etatAgentGaRepo.save(etatActif());
         AgentGa saved = userRepository.save(user);
 
-        Optional<AgentGa> found = userRepository.findById(saved.getIdUserAgentGa());
+        Optional<AgentGa> found = userRepository.findById(saved.getIdAgentGa());
 
         assertThat(found).isPresent();
         assertThat(found.get().getNomPrenomAgentGa()).isEqualTo("Ahmed");
@@ -64,6 +78,8 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Doit retourner tous les utilisateurs")
     void findAll() {
+        etatAgentGaRepo.save(etatActif());
+
         AgentGa u1 = new AgentGa();
         u1.setNomPrenomAgentGa("Ahmed");
         u1.setEmailAgentGa("ahmed@email.com");
@@ -90,6 +106,8 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Doit supprimer un utilisateur")
     void deleteUser() {
+        etatAgentGaRepo.save(etatActif());
+
         AgentGa user = new AgentGa();
         user.setNomPrenomAgentGa("Ahmed");
         user.setEmailAgentGa("ahmed@email.com");
@@ -100,14 +118,16 @@ class UserRepositoryTest {
 
         AgentGa saved = userRepository.save(user);
 
-        userRepository.deleteById(saved.getIdUserAgentGa());
+        userRepository.deleteById(saved.getIdAgentGa());
 
-        assertThat(userRepository.existsById(saved.getIdUserAgentGa())).isFalse();
+        assertThat(userRepository.existsById(saved.getIdAgentGa())).isFalse();
     }
 
     @Test
     @DisplayName("Doit mettre à jour un utilisateur")
     void updateUser() {
+        etatAgentGaRepo.save(etatActif());
+
         AgentGa user = new AgentGa();
         user.setNomPrenomAgentGa("Ahmed");
         user.setEmailAgentGa("ahmed@email.com");
@@ -121,7 +141,7 @@ class UserRepositoryTest {
         saved.setNomPrenomAgentGa("Ahmed Updated");
         userRepository.save(saved);
 
-        Optional<AgentGa> updated = userRepository.findById(saved.getIdUserAgentGa());
+        Optional<AgentGa> updated = userRepository.findById(saved.getIdAgentGa());
 
         assertThat(updated).isPresent();
         assertThat(updated.get().getNomPrenomAgentGa()).isEqualTo("Ahmed Updated");
