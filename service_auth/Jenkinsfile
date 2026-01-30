@@ -29,7 +29,7 @@ pipeline {
             steps {
                 // On saute la compilation et l'exécution des tests
                 // Cela évite l'erreur "package org.junit.jupiter.api does not exist"
-                sh 'mvn test -DskipTests'
+                sh 'mvn clean verify -DskipTests=false'
                 echo 'Tests ignorés pour valider la structure du pipeline.'
             }
         }
