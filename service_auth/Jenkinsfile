@@ -27,9 +27,9 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // On lance les tests JUnit
-                // Si les tests échouent, le pipeline s'arrête ici
-                sh 'mvn test'
+                // Le flag -U force la mise à jour des dépendances
+                // Le flag -e affiche plus de détails en cas d'erreur
+                sh 'mvn test -U -e'
             }
         }
 
