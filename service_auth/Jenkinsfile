@@ -1,12 +1,8 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven-3.9'
-    }
-
     environment {
-        APP_NAME = 'mon-app-springboot'
+        APP_NAME = 'service-auth'
     }
 
     stages {
