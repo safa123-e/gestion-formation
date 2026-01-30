@@ -5,10 +5,9 @@ import iteam.tn.gestionformation.comp.ApiResponse;
 import iteam.tn.gestionformation.model.SessionFormation;
 import iteam.tn.gestionformation.service.SessionFormationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/sessions")
@@ -34,4 +33,8 @@ public class SessionController {
         }
     }
 
+        @GetMapping("/notifications")
+        public List<SessionFormation> getNotifications(@RequestHeader("Authorization") String authHeader) {
+            return sessionService.getNotifications(authHeader);
+        }
 }

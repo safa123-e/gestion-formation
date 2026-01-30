@@ -11,10 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConsultationService {
 
-    private final AffectationFormationServiceRepository affectationRepo;
+ /*   private final AffectationFormationServiceRepository affectationRepo;
 
-    public List<AffectationFormationService> formationsParService(Long serviceId) {
+    public List<AffectationFormationService> formationsParService(Integer serviceId) {
         return affectationRepo.findByServiceId(serviceId);
-    }
+    }*/
 }
 

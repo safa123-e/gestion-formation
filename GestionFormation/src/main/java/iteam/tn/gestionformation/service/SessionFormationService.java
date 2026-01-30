@@ -1,15 +1,21 @@
 package iteam.tn.gestionformation.service;
 
 import iteam.tn.gestionformation.Dto.SessionCreateDto;
+import iteam.tn.gestionformation.Repository.AffectationFormationServiceRepository;
 import iteam.tn.gestionformation.Repository.FormationRepository;
+import iteam.tn.gestionformation.Repository.ParticipationRepository;
 import iteam.tn.gestionformation.Repository.SessionFormationRepository;
+import iteam.tn.gestionformation.comp.AuthClient;
 import iteam.tn.gestionformation.model.AffectationFormationService;
 import iteam.tn.gestionformation.model.Formation;
 import iteam.tn.gestionformation.model.SessionFormation;
+import iteam.tn.gestionformation.model.Participation;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -17,9 +23,12 @@ import java.util.List;
 public class SessionFormationService {
 
 
+
     private final SessionFormationRepository sessionRepository;
     private final FormationRepository formationRepository;
-    private final SessionFormationRepository repository;
+    private final AffectationFormationServiceRepository affectationRepo;
+    private final ParticipationRepository participationRepo;
+    private final AuthClient authClient; // pour récupérer info utilisateur
 
     public SessionFormation creerSession(SessionCreateDto dto) {
         try {
@@ -33,16 +42,17 @@ public class SessionFormationService {
                     .dateFin(dto.getDateFin())
                     .lieu(dto.getLieu())
                     .formateur(dto.getFormateur())
-                    .capacite(dto.getCapacite())
+                    .capacite(dto.getCapaciteTotale())
                     .build();
 
             // ✅ création des affectations
             List<AffectationFormationService> affectations =
-                    dto.getServiceIds().stream()
-                            .map(serviceId ->
+                    dto.getServices().stream()
+                            .map(service ->
                                     AffectationFormationService.builder()
                                             .session(session)
-                                            .serviceId(serviceId)
+                                            .serviceId(service.getServiceId())
+                                            .capacite(service.getCapacite())
                                             .dateAffectation(LocalDateTime.now())
                                             .build()
                             ).toList();
@@ -61,7 +71,30 @@ public class SessionFormationService {
         }
     }
 
-    public List<SessionFormation> sessionsParFormation(Long formationId) {
-        return repository.findByFormationId(formationId);
+    public List<SessionFormation> getNotifications(String authHeader) {
+        // Récupérer l'utilisateur connecté depuis le service Auth
+        HashMap<String, Object> userInfo = (HashMap<String, Object>) authClient.getUserIdConnecte(authHeader);
+        Integer userId = (Integer) userInfo.get("idAgent");
+        Integer serviceId = (Integer) userInfo.get("idService");
+        Boolean isResponsable = (Boolean) userInfo.get("isResponsable");
+
+        if (isResponsable) {
+            // Responsable : toutes les sessions de son service sans aucun participant
+            List<AffectationFormationService> sessionsService = affectationRepo.findByServiceId(serviceId);
+
+            return sessionsService.stream()
+                    .filter(a -> participationRepo.countBySessionId(a.getSession().getId()) == 0)
+                    .map(AffectationFormationService::getSession)
+                    .toList();
+        } else {
+            // Agent normal : ses participations avec statut null
+            List<Participation> participations = participationRepo
+                    .findByUtilisateurIdAndStatutIsNull(userId);
+
+            return participations.stream()
+                    .map(Participation::getSession)
+                    .toList();
+        }
     }
 }
+

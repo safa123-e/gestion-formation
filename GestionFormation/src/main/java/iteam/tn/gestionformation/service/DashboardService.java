@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DashboardService {
 
-    private final ParticipationRepository participationRepository;
+ /*   private final ParticipationRepository participationRepository;
     private final FeedbackRepository feedbackRepository;
 
-    public long nombreParticipantsParService(Long serviceId) {
+    public long nombreParticipantsParService(Integer serviceId) {
         return participationRepository.findByServiceId(serviceId).size();
     }
 
@@ -23,6 +23,6 @@ public class DashboardService {
                 .mapToInt(Feedback::getNote)
                 .average()
                 .orElse(0.0);
-    }
+    }*/
 }
 

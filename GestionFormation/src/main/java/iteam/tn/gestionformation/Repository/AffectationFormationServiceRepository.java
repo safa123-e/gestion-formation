@@ -9,8 +9,7 @@ import java.util.List;
 @Repository
 public interface AffectationFormationServiceRepository
         extends JpaRepository<AffectationFormationService, Long> {
-
-    List<AffectationFormationService> findByServiceId(Long serviceId);
+    List<AffectationFormationService> findByServiceId(Integer serviceId);
 
     List<AffectationFormationService> findBySessionId(Long sessionId);
 }

@@ -1,11 +1,11 @@
 package iteam.tn.gestionformation.model;
-
+import iteam.tn.gestionformation.model.AffectationFormationService ;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import iteam.tn.gestionformation.model.Formation ;
 @Entity
 @Table(name = "session_formation")
 @Getter

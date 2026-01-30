@@ -79,13 +79,15 @@ public class AuthenticationService {
 			Map<String, Object> response = new HashMap<>();
 			AgentProfilAppGa agentProfilAppGa = agentProfilAppGaRepository
 					.findByEtatAgentProfAppGaAndAgentGa_cinAgentGaAndApplicationGa_idAppGa(1, input.getEmail(),
-							idActuelleApplicationGa);
+							1);
+			System.out.println("agentProfilAppGaagentProfilAppGa"+agentProfilAppGa.getAgentGa().getCinAgentGa());
 			if (agentProfilAppGa == null) {
 				response.put("code", -1);
 				response.put("response", "User is not authorized for this application or user not found ");
 
 				return response;
 			} else {
+				System.out.println("hiiii"+agentProfilAppGa.getAgentGa().getCinAgentGa());
 
 				AgentGa user = agentProfilAppGa.getAgentGa();
 				DetailUserDTO userDetail = new DetailUserDTO();
@@ -114,6 +116,8 @@ public class AuthenticationService {
 
 					userDetail.setImageBytes(imageBytes);
 				}
+				System.out.println("kkkkk"+agentProfilAppGa.getAgentGa().getCinAgentGa());
+
 				authenticationManager
 						.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
 

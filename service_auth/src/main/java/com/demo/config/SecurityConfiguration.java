@@ -35,7 +35,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ FIX
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/signin").permitAll()
+				.requestMatchers("/auth/signin").permitAll()
+				//.requestMatchers("/agents/**").authenticated()
             .anyRequest().permitAll()
         )
         .sessionManagement(session ->

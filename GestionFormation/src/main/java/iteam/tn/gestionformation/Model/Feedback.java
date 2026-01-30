@@ -1,5 +1,5 @@
 package iteam.tn.gestionformation.model;
-
+import iteam.tn.gestionformation.model.Participation ;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public class Feedback {
 
     @OneToOne
     @JoinColumn(name = "participation_id", nullable = false, unique = true)
-    private Participation participation;
+    private iteam.tn.gestionformation.model.Participation participation;
 
     private Integer note;
 

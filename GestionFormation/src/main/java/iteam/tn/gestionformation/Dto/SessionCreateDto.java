@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class SessionCreateDto {
@@ -13,8 +16,10 @@ public class SessionCreateDto {
     private LocalDateTime dateFin;
     private String lieu;
     private String formateur;
-    private Integer capacite;
+    private Integer capaciteTotale; // Capacité globale de la session
 
-    // ✅ liste des services à affecter
-    private List<Long> serviceIds;
+    // ✅ On remplace List<Long> par une liste d'objets structurés
+    private List<ServiceCapacityDto> services;
 }
+
+

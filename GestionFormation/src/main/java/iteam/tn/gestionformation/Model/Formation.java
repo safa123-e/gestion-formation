@@ -2,7 +2,7 @@ package iteam.tn.gestionformation.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-
+import iteam.tn.gestionformation.model.TypeFormation ;
 @Entity
 @Table(name = "formation")
 @Getter

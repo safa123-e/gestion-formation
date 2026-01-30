@@ -1,5 +1,5 @@
 package iteam.tn.gestionformation.model;
-
+import iteam.tn.gestionformation.model.SessionFormation ;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -22,10 +22,11 @@ public class Participation {
     private SessionFormation session;
 
     @Column(name = "utilisateur_id", nullable = false)
-    private Long utilisateurId;
+    private Integer utilisateurId;
+
 
     @Column(name = "service_id", nullable = false)
-    private Long serviceId;
+    private Integer serviceId;
 
     private Boolean statut;
 
@@ -36,7 +37,7 @@ public class Participation {
     private LocalDateTime dateDecision;
 
     @Column(name = "decide_par_utilisateur_id")
-    private Long decideParUtilisateurId;
+    private Integer decideParUtilisateurId;
 
     @Column(name = "commentaire_decision")
     private String commentaireDecision;

@@ -20,10 +20,9 @@ public class FormationService {
     private final TypeFormationRepository typeFormationRepository;
     private final AuthClient authClient ;
 
-    public Formation creerFormation(FormationCreateDto dto) {
+    public Formation creerFormation(FormationCreateDto dto, Integer adminId) {
         try {
 
-            Integer adminId = authClient.getUserIdConnecte();
 
             TypeFormation type = typeFormationRepository.findById(dto.getTypeFormationId())
                     .orElseThrow(() ->
@@ -36,6 +35,7 @@ public class FormationService {
                     .typeFormation(type)
                     .dateCreation(LocalDateTime.now())
                     .creeParAdminId(adminId)
+                    .statut(dto.getStatut())
                     .build();
 
             return formationRepository.save(formation);

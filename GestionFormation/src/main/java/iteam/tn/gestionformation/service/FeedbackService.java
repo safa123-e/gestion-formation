@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class FeedbackService {
 
-    private final FeedbackRepository repository;
+   /* private final FeedbackRepository repository;
     private final ParticipationRepository participationRepository;
 
-    public Feedback ajouterFeedback(Long participationId, Integer note, String commentaire) {
+    public Feedback ajouterFeedback(Integer participationId, Integer note, String commentaire) {
 
         if (repository.existsByParticipationId(participationId)) {
             throw new RuntimeException("Feedback déjà soumis");
@@ -33,5 +33,5 @@ public class FeedbackService {
                 .build();
 
         return repository.save(f);
-    }
+    }*/
 }

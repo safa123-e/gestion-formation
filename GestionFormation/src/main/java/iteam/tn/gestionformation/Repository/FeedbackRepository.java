@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface FeedbackRepository
         extends JpaRepository<Feedback, Long> {
 
-    Optional<Feedback> findByParticipationId(Long participationId);
+    Optional<Feedback> findByParticipationId(Integer participationId);
 
-    boolean existsByParticipationId(Long participationId);
+    boolean existsByParticipationId(Integer participationId);
 }
 
