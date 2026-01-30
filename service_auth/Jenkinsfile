@@ -7,7 +7,7 @@ pipeline {
 
     // Ajout de cette section pour charger Maven
     tools {
-        maven 'M3' // <--- Ce nom doit être identique au nom configuré dans Jenkins
+        maven 'Maven-3.9'
     }
 
     stages {
