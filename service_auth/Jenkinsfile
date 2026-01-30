@@ -5,39 +5,55 @@ pipeline {
         APP_NAME = 'service-auth'
     }
 
-    // Ajout de cette section pour charger Maven
     tools {
+        // Assurez-vous que ce nom correspond à votre config (ex: 'Maven-3.9' ou 'M3')
         maven 'Maven-3.9'
     }
 
     stages {
         stage('Checkout') {
             steps {
+                // Récupère le code depuis GitHub
                 checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Clean & Compile') {
             steps {
+                // On nettoie et on compile sans lancer les tests pour l'instant
                 sh 'mvn clean compile'
             }
         }
 
-        stage('Test') {
+        stage('Run Tests') {
             steps {
+                // On lance les tests JUnit
+                // Si les tests échouent, le pipeline s'arrête ici
                 sh 'mvn test'
             }
         }
 
-        stage('Package') {
+        stage('Package JAR') {
             steps {
+                // On génère le fichier .jar final dans le dossier target/
                 sh 'mvn package -DskipTests'
+
+                // Optionnel : Archive le JAR dans Jenkins pour pouvoir le télécharger
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
     }
 
     post {
-        success { echo 'Build SUCCESS!' }
-        failure { echo 'Build FAILED!' }
+        always {
+            // Nettoyage de l'espace de travail (optionnel)
+            echo 'Fin de l\'exécution du pipeline.'
+        }
+        success {
+            echo 'Félicitations ! Le build et les tests sont passés.'
+        }
+        failure {
+            echo 'Le build a échoué. Vérifiez les logs Maven ci-dessus.'
+        }
     }
 }
