@@ -5,6 +5,11 @@ pipeline {
         APP_NAME = 'service-auth'
     }
 
+    // Ajout de cette section pour charger Maven
+    tools {
+        maven 'M3' // <--- Ce nom doit être identique au nom configuré dans Jenkins
+    }
+
     stages {
         stage('Checkout') {
             steps {
