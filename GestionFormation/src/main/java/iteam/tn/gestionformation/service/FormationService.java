@@ -1,8 +1,10 @@
 package iteam.tn.gestionformation.service;
 
 import iteam.tn.gestionformation.Dto.FormationCreateDto;
+import iteam.tn.gestionformation.Dto.FormationSearchDto;
 import iteam.tn.gestionformation.Repository.FormationRepository;
 import iteam.tn.gestionformation.Repository.TypeFormationRepository;
+import iteam.tn.gestionformation.Specification.FormationSpecification;
 import iteam.tn.gestionformation.comp.AuthClient;
 import iteam.tn.gestionformation.model.Formation;
 import iteam.tn.gestionformation.model.TypeFormation;
@@ -49,15 +51,20 @@ public class FormationService {
             throw new RuntimeException("Erreur lors de la création de la formation", e);
         }
     }
-
-    public Formation modifierFormation(Long id, Formation updated) {
-        Formation f = formationRepository.findById(id)
+    public Formation getById(Long id) {
+        return formationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Formation introuvable"));
+    }
 
-        f.setTitre(updated.getTitre());
-        f.setDescription(updated.getDescription());
-        f.setStatut(updated.getStatut());
-        f.setTypeFormation(updated.getTypeFormation());
+    public Formation update(Long id, FormationCreateDto dto) {
+        Formation f = getById(id);
+
+        f.setTitre(dto.getTitre());
+        f.setDescription(dto.getDescription());
+        f.setStatut(dto.getStatut());
+        f.setTypeFormation(
+                typeFormationRepository.findById(dto.getTypeFormationId()).orElseThrow()
+        );
 
         return formationRepository.save(f);
     }
@@ -68,5 +75,10 @@ public class FormationService {
 
     public void supprimerFormation(Long id) {
         formationRepository.deleteById(id);
+    }
+    public List<Formation> search(FormationSearchDto dto) {
+        return formationRepository.findAll(
+                FormationSpecification.withCriteria(dto)
+        );
     }
 }

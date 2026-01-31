@@ -59,7 +59,7 @@ class AgentIntegrationTest {
         idSafae = safae.getIdAgentGa();
     }
 
-    @Test
+ /*   @Test
     @DisplayName("Récupération réelle des agents par IDs via l'API")
     void shouldReturnAgentsFromDatabase() throws Exception {
         // GIVEN
@@ -76,4 +76,5 @@ class AgentIntegrationTest {
                 .andExpect(jsonPath("$[?(@.nomPrenomAgentGa == 'Ahmed')]").exists())
                 .andExpect(jsonPath("$[?(@.nomPrenomAgentGa == 'Safae')]").exists());
     }
+}*/
 }

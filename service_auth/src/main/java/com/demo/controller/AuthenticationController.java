@@ -3,6 +3,7 @@ package com.demo.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,14 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 @RestController
+@RequiredArgsConstructor
+
 public class AuthenticationController {
 
-	@Autowired
-	JwtService jwtService;
-	@Autowired
-	AuthenticationService authenticationService;
-	@Autowired
-	private SftpTools sftpTools;
-	@Autowired
-	private AgentGaService agentGaService;
+	private final JwtService jwtService;
+	private final AuthenticationService authenticationService;
+	private final SftpTools sftpTools;
+	private final AgentGaService agentGaService;
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 

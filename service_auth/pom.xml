@@ -215,6 +215,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>iteam.tn</groupId>
+            <artifactId>GestionFormation</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -225,32 +231,31 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
                 <executions>
+
+                    <!-- 1️⃣ Attacher l'agent AVANT les tests -->
                     <execution>
                         <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+
+                    <!-- 2️⃣ Générer le rapport APRÈS les tests -->
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
+
                 </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <useModulePath>false</useModulePath>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                    </includes>
-                </configuration>
+                <version>3.5.2</version>
             </plugin>
 <plugin>
             <groupId>org.sonarsource.scanner.maven</groupId>
